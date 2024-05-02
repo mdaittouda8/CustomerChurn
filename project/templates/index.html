@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Prédiction de désabonnement</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f0f0;
+    }
+    .login {
+      margin-top: 50px;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .login h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 28px;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #007bff;
+    }
+
+    .login form input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+    }
+
+    .login form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      height: 45px; /* Augmenter la hauteur */
+    }
+
+    .login form button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    .login form button:hover {
+      background-color: #0056b3;
+    }
+
+    .alert-primary {
+      margin-bottom: 20px;
+      color: #004085;
+      background-color: #cce5ff;
+      border-color: #b8daff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="login">
+          <h1>Prediction de désabonnement des clients</h1>
+          <div class="alert alert-primary" role="alert">
+            Remplissez les champs suivants pour prédire le désabonnement.
+          </div>
+          <!-- Main Input For Receiving Query to our ML -->
+          <form action="{{ url_for('predict')}}" method="post">
+            <div class="form-row">
+              <div class="col-lg-4">
+                <input type="text" name="Age" placeholder="Âge" required="required">
+              </div>
+              <div class="col-lg-4">
+                <input type="text" name="Number of Dependents" placeholder="Nombre de personnes à charge" required="required">
+              </div>
+              <div class="col-lg-4">
+                <input type="text" name="Latitude" placeholder="Latitude" required="required">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-lg-4">
+                <input type="text" name="Longitude" placeholder="Longitude" required="required">
+              </div>
+              <div class="col-lg-4">
+                <input type="text" name="Number of Referrals" placeholder="Nombre de références" required="required">
+              </div>
+              <div class="col-lg-4">
+                <input type="text" name="Tenure in Months" placeholder="Ancienneté en mois" required="required">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-lg-4">
+                <input type="text" name="Avg Monthly Long Distance Charges" placeholder="Frais mensuels moyens de longue distance" required="required">
+              </div>
+              <div class="col-lg-4">
+                <input type="text" name="Avg Monthly GB Download" placeholder="Téléchargement mensuel moyen en Go" required="required">
+              </div>
+              <div class="col-lg-4">
+                <input type="text" name="Monthly Charge" placeholder="Charge mensuelle" required="required">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-lg-4">
+                <input type="text" name="Total Charges" placeholder="Total des charges" required="required">
+              </div>
+              <div class="col-lg-4">
+                <input type="text" name="Total Long Distance Charges" placeholder="Total des frais de longue distance" required="required">
+              </div>
+              <div class="col-lg-4">
+                <input type="text" name="Total Revenue" placeholder="Revenu total" required="required">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-lg-4">
+                <select class="custom-select" name="Type d'internet" required>
+                  <option selected disabled>Choisir le Type d'internet</option>
+                  <option value="1">DSL</option>
+                  <option value="0">Fibre optique</option>
+                  <option value="0">Câble</option>
+                </select>
+              </div>
+              <div class="col-lg-4">
+                <select class="custom-select" name="Données illimitées" required>
+                  <option selected disabled>Choisir le type de Données...</option>
+                  <option value="1">Illimitées</option>
+                  <option value="0">Normal</option>
+                </select>
+              </div>
+              <div class="col-lg-4">
+                <select class="custom-select" name="Contract" required>
+                  <option selected disabled>Choisir le type de contrat...</option>
+                  <option value="[1,0]">Mensuel</option>
+                  <option value="[0,1]">Une année </option>
+                  <option value="[0,0]">2 année</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Prédire</button>
+          </form>
+          <br>
+          <br>
+          {{ prediction_text }}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
